@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -33,9 +34,13 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        val view = binding!!.root
-        return view
+//        VIEW BINDING
+//        binding = FragmentSearchBinding.inflate(inflater, container, false)
+//        val view = binding!!.root
+//        return view
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search,container,false)
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +75,21 @@ class SearchFragment : Fragment() {
             false
         }
 
+        binding!!.tryAgainImage.setOnClickListener {
+
+            binding!!.editTextMovieName.setText("")
+            binding!!.contentLayout.visibility = View.VISIBLE
+            binding!!.errorTryAgainLayout.visibility = View.GONE
+        }
+
+        binding!!.tryAgainImage2.setOnClickListener {
+
+            binding!!.editTextMovieName.setText("")
+            binding!!.contentLayout.visibility = View.VISIBLE
+            binding!!.errorNoFilmLayout.visibility = View.GONE
+        }
+
+
         observeLiveData()
 
 
@@ -77,19 +97,6 @@ class SearchFragment : Fragment() {
 
     private fun observeLiveData() {
 
-//        viewModel.movieSearchData.observe(viewLifecycleOwner, Observer { movieData ->
-//
-//            movieData?.let {
-//
-//                binding!!.contentLayout.visibility = View.VISIBLE
-//                adapter.updateMovieList(movieData.search)
-//
-//                Log.i(TAG,"first ")
-//                Log.i(TAG,"first title: " + movieData.search.get(0).title)
-//                Log.i(TAG,"movieData: " + movieData.search)
-//
-//            }
-//        })
 
         viewModel.movieDetailsListData.observe(viewLifecycleOwner, Observer { movieListData ->
 
@@ -115,8 +122,8 @@ class SearchFragment : Fragment() {
             if (it) {
                 binding!!.contentLayout.visibility = View.GONE
                 binding!!.progressBarSearch.visibility = View.VISIBLE
-                binding!!.errorTryAgainText.visibility = View.GONE
-                binding!!.errorNoFilm.visibility = View.GONE
+                binding!!.errorTryAgainLayout.visibility = View.GONE
+                binding!!.errorNoFilmLayout.visibility = View.GONE
             } else {
                 binding!!.progressBarSearch.visibility = View.GONE
             }
@@ -130,10 +137,10 @@ class SearchFragment : Fragment() {
 
                 binding!!.contentLayout.visibility = View.GONE
                 binding!!.progressBarSearch.visibility = View.GONE
-                binding!!.errorTryAgainText.visibility = View.VISIBLE
+                binding!!.errorTryAgainLayout.visibility = View.VISIBLE
 
             } else {
-                binding!!.errorTryAgainText.visibility = View.GONE
+                binding!!.errorTryAgainLayout.visibility = View.GONE
             }
 
         })
@@ -144,10 +151,10 @@ class SearchFragment : Fragment() {
 
                 binding!!.contentLayout.visibility = View.GONE
                 binding!!.progressBarSearch.visibility = View.GONE
-                binding!!.errorNoFilm.visibility = View.VISIBLE
+                binding!!.errorNoFilmLayout.visibility = View.VISIBLE
 
             } else {
-                binding!!.errorNoFilm.visibility = View.GONE
+                binding!!.errorNoFilmLayout.visibility = View.GONE
             }
 
         })
